@@ -2,6 +2,8 @@
 
 MERN full stack web application. Work in progress. Currently works great. Just needs more features. 
 
+I plan to deploy a version on Heroku as soon as I can figure out how to do that. I haven't deployed a full stack app before.
+
 Will slowly add more while looking for job. 
 
 

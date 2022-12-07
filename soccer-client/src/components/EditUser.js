@@ -61,6 +61,7 @@ function EditUser(props){
                                 });
                             });
                             setUpdate(true);
+                            setError("");
                         } else {
                             setUpdate(false);
                             setError("Something went wrong in update");
@@ -110,6 +111,7 @@ function EditUser(props){
                 <InputGroup type="text" onChange={(e) => setLastName(e.target.value)}
                     placeholder="Leave blank to keep the same" className='input' value={lastName} autoComplete="off" />
             </FormGroup>
+            {error ? <h3>{error}</h3> : <h3>{successMsg}</h3>}
             <form onSubmit={handleUpdate} className="inputForm">
                 <Button
                     intent="primary"
@@ -124,7 +126,7 @@ function EditUser(props){
                     fill
                     type="submit" />
             </form>
-            {error ? <h3>{error}</h3> : <h3>{successMsg}</h3>}
+           
         </div>
     );
 }

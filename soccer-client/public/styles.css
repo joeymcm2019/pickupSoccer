@@ -61,6 +61,83 @@ p {
   display: inline;
 }
 
+/* !------------------GROUP NOTE------------------! */
+.note {
+  position: relative;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 2px 5px #ccc;
+  padding: 10px;
+  width: 300px;
+  margin: 0px auto 25px auto;
+  float: left;
+}
+.note h1 {
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+.note p {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  display: inline;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin-right: 10px;
+}
+
+
+/* must make div parent have relative position. */
+.delete-button { 
+  position: absolute;
+  float: right;
+  color: rgba(45, 114, 210);
+  border: none;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  outline: none;
+  right: -10px;
+  border-radius: 5px;
+}
+
+
+.create-note {
+  position: relative;
+  width: 300px;
+  margin: 30px auto 40px auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 7px;
+  box-shadow: 0 1px 5px rgb(138, 137, 137);
+}
+.create-note input, .create-note textarea {
+  width: 100%;
+  border: none;
+  padding: 4px;
+  outline: none;
+  font-size: 1.2em;
+  font-family: inherit;
+  resize: none;
+}
+.create-note button {
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  background: rgba(45, 114, 210);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  outline: none;
+  font-size: 20px
+}
+
+/* !------------------END GROUP NOTE------------------! */
+
+
 .center {
   position: relative;
   display: flex;
@@ -72,6 +149,11 @@ p {
   width: 340px;
 }
 
+.timeSelections select {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
 .viewGroup {
   margin-bottom: 30px;
 }
@@ -79,6 +161,7 @@ p {
 .viewGroup p {
   font-weight: 600;
 }
+
 
 .colorBackground {
   padding: 20px;

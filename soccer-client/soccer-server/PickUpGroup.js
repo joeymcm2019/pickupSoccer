@@ -6,7 +6,7 @@ const findOrCreate = require('mongoose-findorcreate');
 
 const pickUpGroupSchema = new mongoose.Schema ({
     privacy: {type: String, required: true},
-    creatorID: {type: String, required: true},
+    creatorUsername: {type: String, required: true},
     state: {type: String, required: true},
     city: {type: String, required: true},
     ageGroup: {type: String, required: true},

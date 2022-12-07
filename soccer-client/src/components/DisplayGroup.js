@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
-import { Button } from "@blueprintjs/core";
+import { Button, PopoverPosition } from "@blueprintjs/core";
+import EditGroup from './EditGroup';
+import GroupPost from './GroupPost/GroupPost';
 
 function DisplayGroup(props){
 
     const [userContext, setUserContext] = useContext(UserContext);
     const [viewingInfo, setViewingInfo] = useState(false);
     const [buttonText, setButtonText] = useState("View Info");
+    const [isCreator, setIsCreator] = useState(false);
+    const [editingGroup, setEditingGroup] = useState(false);
 
     const getGroupInfo = () => {
         const REACT_APP_API_ENDPOINT = "http://localhost:3000/"
@@ -28,10 +32,14 @@ function DisplayGroup(props){
                     if (data.success) {
                         console.log("successful fetch");
                         console.log("group: " + JSON.stringify(data));
-                        const {ageGroup, city, state, playArea, playTimes, privacy, competitiveness} = data.pickUpGroup;
+                        const {ageGroup, city, state, playArea, playTimes, players, 
+                            privacy, competitiveness, creatorUsername} = data.pickUpGroup;
+                        if (userContext.username === creatorUsername){
+                            setIsCreator(true);
+                        }
                         await setUserContext((prevValues) => {
                             return ({...prevValues, ageGroup, city, 
-                            state, playArea, playTimes, privacy, competitiveness});
+                            state, playArea, players, playTimes, privacy, competitiveness});
                         });
                         
                     } else {
@@ -45,7 +53,7 @@ function DisplayGroup(props){
     }
 
     useEffect(() => {
-        if (props.needInfo){
+        if (!props.canJoin){
         getGroupInfo();
         }
     }, []);
@@ -74,61 +82,100 @@ function DisplayGroup(props){
     return playTimesHTML;
    }
 
+   const displayRole = () => {
+    if (isCreator){
+        return <p>Admin</p>
+    } else {
+        return <p>Member</p> 
+    }
+   }
+   
+   const handleEdit = () => {
+        setEditingGroup(!editingGroup);
+   }
+
+   console.log("players: " + JSON.stringify(userContext.players));
+
     return (
         <div>
-            <h2>{props.selectedGroupName}</h2>
-            {!props.needInfo && 
-            <form onSubmit={(e) => { props.joinGroup(e) }} className="inputForm">
-                <Button
-                    intent="primary"
-                    text={"Join Group"}
-                    fill
-                    type="submit" />
-            </form>
+            {!editingGroup ?
+            <div>
+                <h2>{props.selectedGroupName}</h2>
+                {props.canJoin &&  //option to join if user is viewing group from search
+                    <form onSubmit={(e) => { props.joinGroup(e) }} className="inputForm">
+                        <Button
+                            intent="primary"
+                            text={"Join Group"}
+                            fill
+                            type="submit" />
+                    </form>
+                }
+                {!props.canJoin && 
+                    <GroupPost />
+                }
+                {viewingInfo && //user wants to see more information
+                    <div className="viewGroup">
+                        <h3>Role</h3>
+                        {displayRole()}
+                        <h3>Location</h3>
+                        <p>{userContext.city}, {userContext.state}</p>
+                        <h3>Privacy</h3>
+                        <p>{userContext.privacy}</p>
+                        <h3>Age Group</h3>
+                        <p>{userContext.ageGroup}</p>
+                        {(userContext.playArea != "") &&
+                            <div>
+                                <h3>Play Area</h3>
+                                <p>{userContext.playArea}</p>
+                            </div>
+                        }
+                        {(userContext.playTimes != "") &&
+                            <div>
+                                <h3>Play Times</h3>
+                                {displayTimes()}
+                            </div>
+                        }
+                        {(userContext.competitiveness != "") &&
+                            <div>
+                                <h3>Competitiveness</h3>
+                                <p>{userContext.competitiveness}</p>
+                            </div>
+                        }
+                        <h3>Number of Members: {userContext.players && userContext.players.length}</h3> 
+                    </div>}
+                <form onSubmit={viewGroupInfo}>
+                    <Button
+                        intent="primary"
+                        text={buttonText}
+                        fill
+                        type="submit"
+                    />
+                </form>
+                { 
+                    isCreator &&
+                    <form onSubmit={handleEdit}>
+                        <Button
+                            intent="primary"
+                            text={"Edit Group"}
+                            fill
+                            type="submit"
+                        />
+                    </form> 
+                }
+                <form onSubmit={props.returnFromGroup}>
+                    <Button
+                        intent="primary"
+                        text={"Back"}
+                        fill
+                        type="submit"
+                    />
+                </form>
+            </div> :
+                <div>
+                    <EditGroup returnFromEdit={handleEdit} selectedGroupID={props.selectedGroupID}
+                        selectedGroupName={props.selectedGroupName} />
+                </div>
             }
-            {viewingInfo &&
-                <div className="viewGroup">
-                    <h3>Location</h3>
-                    <p>{userContext.city}, {userContext.state}</p>
-                    <h3>Privacy</h3>
-                    <p>{userContext.privacy}</p>
-                    <h3>Age Group</h3>
-                    <p>{userContext.ageGroup}</p>
-                    {(userContext.playArea != "") &&
-                        <div>
-                            <h3>Play Area</h3>
-                            <p>{userContext.playArea}</p>
-                        </div>
-                    }
-                    {(userContext.playTimes != "") &&
-                        <div>
-                            <h3>Play Times</h3>
-                            {displayTimes()}
-                        </div>
-                    }
-                    {(userContext.competitiveness != "") &&
-                        <div>
-                            <h3>Competitiveness</h3>
-                            <p>{userContext.competitiveness}</p>
-                        </div>
-                    }
-                </div>}
-            <form onSubmit={viewGroupInfo}>
-                <Button
-                    intent="primary"
-                    text={buttonText}
-                    fill
-                    type="submit"
-                />
-            </form>
-            <form onSubmit={props.returnFromGroup}>
-                <Button
-                    intent="primary"
-                    text={"Back"}
-                    fill
-                    type="submit"
-                />
-            </form>
         </div>
     );
 }

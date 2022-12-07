@@ -7,7 +7,6 @@ const postSchema = new mongoose.Schema ({
     groupID: {type: String, required: true},
     userID: {type: String, required: true},
     content: {type: String, required: true},
-    title: {type: String}
 }, 
 {
     timestamps: true

@@ -53,7 +53,7 @@ router.post('/register', async (req, res) =>{
             passport.authenticate('local')(req, res, async function(){
                 if (req.isAuthenticated()){
                     console.log("user id: " + registerUser.id);
-                    res.json({ success: true, token: generateToken(registerUser.id) })
+                    res.json({ success: true, token: generateToken(registerUser.id)})
                 }
             });
         } else {

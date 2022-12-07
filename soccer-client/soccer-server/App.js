@@ -142,7 +142,7 @@ app.post('/createGroup', protect, async function (req, res) {
             playArea: playArea,
             players: players,
             id: groupID,
-            creatorID: req.user.id,
+            creatorUsername: req.user.username,
             privacy: publicOrPrivate
         });
 
@@ -198,7 +198,7 @@ app.get("/getGroup/:groupID", protect, async function(req, res) {
     }
 });
 
-//update players in a specfic group.
+//update players in a specific group.
 app.patch("/joinGroup", protect, async function (req, res) {
     console.log("attempting to join group !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     const { groupID, username } = req.body;
@@ -216,6 +216,26 @@ app.patch("/joinGroup", protect, async function (req, res) {
         }
     });
 });
+
+
+app.patch("/updateGroup/:groupID", protect, async function (req, res) {
+    const groupID = req.params.groupID;
+    const {ageGroup, competitiveness, playArea, playTimes} = req.body;
+    const group = await PickUpGroup.findOne({id: groupID });
+    if (group.creatorUsername != req.user.username){
+        console.log("authentication failure: user is not admin of group");
+    } else {
+        PickUpGroup.updateOne({id: groupID}, {ageGroup: ageGroup, competitiveness: competitiveness,
+        playArea: playArea, playTimes: playTimes}, function (err, docs){
+            if (err){
+                res.json({success: false, msg: err});
+            } else {
+                console.log("updated group" + JSON.stringify(docs));
+                res.json({success: true});
+            }
+        });
+    }
+})
 
 
 

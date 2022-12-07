@@ -289,7 +289,7 @@ return (
             <DisplayGroup selectedGroupID={userContext.groupID} 
                 selectedGroupName={userContext.groupName}
                 returnFromGroup={returnFromGroup}
-                needInfo={false}
+                canJoin={true}
                 joinGroup={joinGroup}
                 /> :
         <div>

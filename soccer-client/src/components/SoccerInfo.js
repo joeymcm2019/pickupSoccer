@@ -105,7 +105,7 @@ const returnFromFind = () => {
                             <DisplayGroup selectedGroupID={selectedGroupID} 
                                 selectedGroupName={selectedGroupName}
                                 returnFromGroup={returnFromGroup}
-                                needInfo={true}
+                                canJoin={false}
                                 /> :
                                 <div>
                                     {userContext.pickUpGroups.length === 0 ?

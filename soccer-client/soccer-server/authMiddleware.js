@@ -28,8 +28,7 @@ const protect = async(req, res, next) => {
         res.send({msg: "Not authorized. No token"})
         console.log("no token, not authorized");
     }
-
-    console.log("")
+    console.log("");
 }
 
 module.exports = { protect };

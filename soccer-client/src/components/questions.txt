@@ -1,4 +1,0 @@
-using useState variables as props. How does that work?
-multiple contexts? Good/bad?
-I definitely feel like the group players don't belong in the userContext.
-
